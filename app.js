@@ -201,6 +201,9 @@ class RosaryApp {
                     .join('')
                     .toLowerCase();
 
+                // Display the transcript for user feedback
+                this.displayTranscript(transcript);
+                
                 this.checkPrayerCompletion(transcript);
             };
 
@@ -211,7 +214,11 @@ class RosaryApp {
 
             this.recognition.onend = () => {
                 if (this.voiceEnabled && this.isListening) {
-                    this.recognition.start();
+                    try {
+                        this.recognition.start();
+                    } catch(e) {
+                        console.log('Recognition restart failed:', e);
+                    }
                 }
             };
         } else {
@@ -220,26 +227,43 @@ class RosaryApp {
         }
     }
 
+    displayTranscript(transcript) {
+        let transcriptDiv = document.getElementById('transcript-display');
+        if (!transcriptDiv) {
+            transcriptDiv = document.createElement('div');
+            transcriptDiv.id = 'transcript-display';
+            transcriptDiv.className = 'transcript-display';
+            const voiceStatus = document.getElementById('voice-status');
+            voiceStatus.parentNode.insertBefore(transcriptDiv, voiceStatus.nextSibling);
+        }
+        transcriptDiv.textContent = `"${transcript}"`;
+    }
+
     checkPrayerCompletion(transcript) {
         const currentPrayer = this.prayers[this.currentPrayerIndex];
         
-        // Keywords to detect prayer completion
+        // Keywords to detect prayer completion - more flexible matching
         const prayerKeywords = {
-            'our father': ['our father', 'father our', 'heaven'],
-            'hail mary': ['hail mary', 'mary full', 'full of grace'],
-            'glory be': ['glory be', 'glory to the father', 'as it was'],
-            'fatima': ['fatima', 'o my jesus', 'forgive us'],
-            'apostles creed': ['creed', 'i believe', 'apostles']
+            'our_father': ['our father', 'father our', 'in heaven', 'hallowed be'],
+            'hail_mary': ['hail mary', 'full of grace', 'blessed art thou', 'holy mary'],
+            'glory_be': ['glory be', 'glory to the father', 'as it was in the beginning'],
+            'fatima': ['o my jesus', 'forgive us', 'save us from the fires'],
+            'apostles_creed': ['i believe', 'creed', 'god the father almighty'],
+            'hail_holy_queen': ['hail holy queen', 'mother of mercy'],
+            'mystery_announcement': [] // No keywords needed, just advance manually
         };
 
         const keywords = prayerKeywords[currentPrayer.type];
-        if (keywords && keywords.some(keyword => transcript.includes(keyword))) {
-            this.updateVoiceStatus('Prayer Detected!', 'detected');
+        if (keywords && keywords.length > 0 && keywords.some(keyword => transcript.includes(keyword))) {
+            this.updateVoiceStatus('✓ Prayer Detected!', 'detected');
             
             // Auto-advance after short delay
             setTimeout(() => {
                 this.nextPrayer();
-            }, 1500);
+            }, 2000);
+        } else if (keywords && keywords.length === 0) {
+            // For mystery announcements, don't auto-detect
+            this.updateVoiceStatus('Listening... (click Next to continue)', 'listening');
         }
     }
 
@@ -260,11 +284,40 @@ class RosaryApp {
     generatePrayerSequence(mysteryType) {
         const prayers = [];
         
-        // Opening prayers
-        prayers.push({ type: 'apostles_creed', title: "The Apostles' Creed", text: "I believe in God, the Father almighty, Creator of heaven and earth, and in Jesus Christ, His only Son, our Lord..." });
-        prayers.push({ type: 'our_father', title: "Our Father", text: "Our Father, who art in heaven, hallowed be thy name; thy kingdom come; thy will be done on earth as it is in heaven..." });
-        prayers.push({ type: 'hail_mary', title: "Hail Mary (3)", text: "Hail Mary, full of grace, the Lord is with thee; blessed art thou amongst women, and blessed is the fruit of thy womb, Jesus..." });
-        prayers.push({ type: 'glory_be', title: "Glory Be", text: "Glory be to the Father, and to the Son, and to the Holy Spirit, as it was in the beginning, is now, and ever shall be, world without end. Amen." });
+        // Opening prayers with complete text
+        prayers.push({ 
+            type: 'apostles_creed', 
+            title: "The Apostles' Creed", 
+            text: "I believe in God, the Father almighty, Creator of heaven and earth, and in Jesus Christ, His only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried; He descended into hell; on the third day He rose again from the dead; He ascended into heaven, and is seated at the right hand of God the Father almighty; from there He will come to judge the living and the dead. I believe in the Holy Spirit, the holy catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen." 
+        });
+        prayers.push({ 
+            type: 'our_father', 
+            title: "Our Father", 
+            text: "Our Father, who art in heaven, hallowed be thy name; thy kingdom come; thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen." 
+        });
+        prayers.push({ 
+            type: 'hail_mary', 
+            title: "Hail Mary (1st)", 
+            text: "Hail Mary, full of grace, the Lord is with thee; blessed art thou amongst women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.",
+            scripture: "For the increase of Faith - Hebrews 11:1"
+        });
+        prayers.push({ 
+            type: 'hail_mary', 
+            title: "Hail Mary (2nd)", 
+            text: "Hail Mary, full of grace, the Lord is with thee; blessed art thou amongst women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.",
+            scripture: "For the increase of Hope - Romans 15:13"
+        });
+        prayers.push({ 
+            type: 'hail_mary', 
+            title: "Hail Mary (3rd)", 
+            text: "Hail Mary, full of grace, the Lord is with thee; blessed art thou amongst women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.",
+            scripture: "For the increase of Charity - 1 Corinthians 13:13"
+        });
+        prayers.push({ 
+            type: 'glory_be', 
+            title: "Glory Be", 
+            text: "Glory be to the Father, and to the Son, and to the Holy Spirit, as it was in the beginning, is now, and ever shall be, world without end. Amen." 
+        });
 
         // Five decades
         const mystery = this.mysteries[mysteryType];
@@ -277,13 +330,26 @@ class RosaryApp {
             });
             prayers.push({ type: 'our_father', title: "Our Father", text: "Our Father, who art in heaven, hallowed be thy name; thy kingdom come; thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen." });
             
-            // 10 Hail Marys per decade
+            // 10 Hail Marys per decade with unique scriptures
+            const decadeScriptures = [
+                "The Annunciation - Luke 1:26-38",
+                "Mary's Fiat - Luke 1:38",
+                "The Visitation - Luke 1:39-45",
+                "The Magnificat - Luke 1:46-55",
+                "The Nativity - Luke 2:1-7",
+                "The Shepherds - Luke 2:8-20",
+                "The Presentation - Luke 2:22-35",
+                "Simeon's Prophecy - Luke 2:34-35",
+                "Finding in the Temple - Luke 2:41-52",
+                "Jesus' Growth - Luke 2:52"
+            ];
+            
             for (let j = 0; j < 10; j++) {
                 prayers.push({ 
                     type: 'hail_mary', 
                     title: `Hail Mary ${j + 1}/10`, 
                     text: "Hail Mary, full of grace, the Lord is with thee; blessed art thou amongst women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.",
-                    scripture: mystery.mysteries[i].scripture
+                    scripture: decadeScriptures[j]
                 });
             }
             
@@ -291,9 +357,17 @@ class RosaryApp {
             prayers.push({ type: 'fatima', title: "Fatima Prayer", text: "O my Jesus, forgive us our sins, save us from the fires of hell, lead all souls to Heaven, especially those in most need of Thy mercy. Amen." });
         }
 
-        // Closing prayers
-        prayers.push({ type: 'hail_holy_queen', title: "Hail Holy Queen", text: "Hail, holy Queen, Mother of mercy, our life, our sweetness, and our hope. To thee do we cry, poor banished children of Eve..." });
-        prayers.push({ type: 'concluding_prayer', title: "Concluding Prayer", text: "O God, whose only begotten Son, by his life, Death, and Resurrection, has purchased for us the rewards of eternal life, grant, we beseech thee, that meditating upon these mysteries of the Most Holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise, through the same Christ our Lord. Amen." });
+        // Closing prayers with complete text
+        prayers.push({ 
+            type: 'hail_holy_queen', 
+            title: "Hail Holy Queen", 
+            text: "Hail, holy Queen, Mother of mercy, our life, our sweetness, and our hope. To thee do we cry, poor banished children of Eve; to thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious Advocate, thine eyes of mercy toward us; and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary. Pray for us, O holy Mother of God, that we may be made worthy of the promises of Christ. Amen." 
+        });
+        prayers.push({ 
+            type: 'concluding_prayer', 
+            title: "Concluding Prayer", 
+            text: "O God, whose only begotten Son, by his life, Death, and Resurrection, has purchased for us the rewards of eternal life, grant, we beseech thee, that meditating upon these mysteries of the Most Holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise, through the same Christ our Lord. Amen." 
+        });
 
         this.prayers = prayers;
         this.generateBeads();
