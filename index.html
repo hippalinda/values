@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holy Rosary Prayer App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Menu - Diamond Selection -->
+        <div id="main-menu" class="screen active">
+            <h1>The Holy Rosary</h1>
+            <p class="subtitle">Select a Mystery</p>
+            
+            <div class="diamond-container">
+                <!-- Joyful Mysteries (Blue) - Left -->
+                <div class="mystery-diamond joyful" data-mystery="joyful">
+                    <div class="diamond-content">
+                        <img src="https://images.unsplash.com/photo-1544211184-9e61f4535a2b?w=300&h=300&fit=crop" alt="Joyful Mysteries">
+                        <h3>Joyful</h3>
+                        <p>Monday & Saturday</p>
+                    </div>
+                </div>
+                
+                <!-- Sorrowful Mysteries (Pink) - Top -->
+                <div class="mystery-diamond sorrowful" data-mystery="sorrowful">
+                    <div class="diamond-content">
+                        <img src="https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=300&h=300&fit=crop" alt="Sorrowful Mysteries">
+                        <h3>Sorrowful</h3>
+                        <p>Tuesday & Friday</p>
+                    </div>
+                </div>
+                
+                <!-- Luminous Mysteries (White) - Center -->
+                <div class="mystery-diamond luminous" data-mystery="luminous">
+                    <div class="diamond-content">
+                        <img src="https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=300&h=300&fit=crop" alt="Luminous Mysteries">
+                        <h3>Luminous</h3>
+                        <p>Thursday</p>
+                    </div>
+                </div>
+                
+                <!-- Glorious Mysteries (Yellow) - Bottom -->
+                <div class="mystery-diamond glorious" data-mystery="glorious">
+                    <div class="diamond-content">
+                        <img src="https://images.unsplash.com/photo-1507643179173-617d654551a3?w=300&h=300&fit=crop" alt="Glorious Mysteries">
+                        <h3>Glorious</h3>
+                        <p>Wednesday & Sunday</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="voice-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="voice-enabled" checked>
+                    <span class="slider"></span>
+                </label>
+                <span>Voice Recognition Enabled</span>
+            </div>
+        </div>
+        
+        <!-- Prayer Screen -->
+        <div id="prayer-screen" class="screen">
+            <div class="prayer-header">
+                <button id="back-btn" class="back-button">← Back</button>
+                <div class="mystery-indicator">
+                    <span id="current-mystery-name">Mystery Name</span>
+                </div>
+            </div>
+            
+            <div class="prayer-progress">
+                <div class="rosary-beads" id="rosary-beads">
+                    <!-- Beads will be generated dynamically -->
+                </div>
+            </div>
+            
+            <div class="prayer-display">
+                <div class="prayer-image-container">
+                    <img id="current-prayer-image" src="" alt="Prayer Image">
+                </div>
+                
+                <h2 id="prayer-title">Prayer Title</h2>
+                
+                <div class="scripture-reading" id="scripture-reading">
+                    <!-- Scripture text will appear here -->
+                </div>
+                
+                <div class="prayer-text" id="prayer-text">
+                    <!-- Prayer text will appear here -->
+                </div>
+                
+                <div class="voice-status" id="voice-status">
+                    <div class="mic-icon">🎤</div>
+                    <span id="voice-status-text">Listening...</span>
+                </div>
+                
+                <div class="manual-controls">
+                    <button id="next-prayer-btn" class="next-btn">Next Prayer →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Completion Screen -->
+        <div id="completion-screen" class="screen">
+            <div class="completion-content">
+                <img src="https://images.unsplash.com/photo-1507643179173-617d654551a3?w=400&h=400&fit=crop" alt="Completion">
+                <h1>Rosary Complete</h1>
+                <p>May the blessings of the Holy Rosary be with you.</p>
+                <button id="new-rosary-btn" class="new-rosary-btn">Pray Another Rosary</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
