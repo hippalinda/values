@@ -1,0 +1,452 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.screen {
+    display: none;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Main Menu Styles */
+#main-menu {
+    text-align: center;
+    color: white;
+    padding-top: 40px;
+}
+
+#main-menu h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    font-size: 1.3em;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.diamond-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 0 auto 40px;
+}
+
+.mystery-diamond {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    transform: rotate(45deg);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    border: 4px solid rgba(255,255,255,0.3);
+    overflow: hidden;
+}
+
+.mystery-diamond:hover {
+    transform: rotate(45deg) scale(1.1);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.mystery-diamond .diamond-content {
+    transform: rotate(-45deg);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.mystery-diamond img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 3px solid white;
+}
+
+.mystery-diamond h3 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.mystery-diamond p {
+    font-size: 0.8em;
+    color: white;
+    opacity: 0.9;
+}
+
+/* Diamond Colors */
+.joyful {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    top: 110px;
+    left: 0;
+}
+
+.sorrowful {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    top: 0;
+    left: 110px;
+}
+
+.luminous {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    top: 110px;
+    left: 110px;
+}
+
+.luminous h3,
+.luminous p {
+    color: #333;
+    text-shadow: none;
+}
+
+.glorious {
+    background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%);
+    bottom: 0;
+    left: 110px;
+}
+
+.glorious h3,
+.glorious p {
+    color: #333;
+    text-shadow: none;
+}
+
+/* Voice Toggle */
+.voice-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    color: white;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,0.3);
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: rgba(255,255,255,0.8);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Prayer Screen */
+.prayer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.back-button {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid white;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: rgba(255,255,255,0.4);
+}
+
+.mystery-indicator {
+    background: rgba(255,255,255,0.2);
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1.1em;
+}
+
+/* Rosary Beads Progress */
+.prayer-progress {
+    margin-bottom: 20px;
+}
+
+.rosary-beads {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.bead {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: 2px solid white;
+    transition: all 0.3s ease;
+}
+
+.bead.completed {
+    background: #ffd700;
+    box-shadow: 0 0 10px #ffd700;
+}
+
+.bead.current {
+    background: white;
+    box-shadow: 0 0 15px white;
+    transform: scale(1.3);
+}
+
+/* Prayer Display */
+.prayer-display {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.prayer-image-container {
+    width: 100%;
+    height: 250px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.prayer-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#prayer-title {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.scripture-reading {
+    background: #f8f9fa;
+    border-left: 4px solid #667eea;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-style: italic;
+    color: #555;
+    line-height: 1.6;
+}
+
+.prayer-text {
+    font-size: 1.2em;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Voice Status */
+.voice-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.mic-icon {
+    font-size: 1.5em;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+.voice-status.listening {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.voice-status.detected {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* Manual Controls */
+.manual-controls {
+    text-align: center;
+}
+
+.next-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1em;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.next-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 25px rgba(102, 126, 234, 0.6);
+}
+
+/* Completion Screen */
+.completion-content {
+    text-align: center;
+    color: white;
+    padding-top: 60px;
+}
+
+.completion-content img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid white;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.completion-content h1 {
+    font-size: 3em;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.completion-content p {
+    font-size: 1.3em;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.new-rosary-btn {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.new-rosary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 25px rgba(0,0,0,0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .diamond-container {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .mystery-diamond {
+        width: 130px;
+        height: 130px;
+    }
+    
+    .joyful {
+        top: 85px;
+        left: 0;
+    }
+    
+    .sorrowful {
+        top: 0;
+        left: 85px;
+    }
+    
+    .luminous {
+        top: 85px;
+        left: 85px;
+    }
+    
+    .glorious {
+        bottom: 0;
+        left: 85px;
+    }
+    
+    #main-menu h1 {
+        font-size: 2em;
+    }
+    
+    .prayer-image-container {
+        height: 200px;
+    }
+}

@@ -1,0 +1,3 @@
+Nothing should be ignored in this case, as the added files (app.js, index.html, styles.css) are all source code/config files without any build artifacts, dependencies, or temporary files in the changes.
+
+Output: (empty - no content)
